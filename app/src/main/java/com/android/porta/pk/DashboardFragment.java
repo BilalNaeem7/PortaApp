@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.android.porta.pk.responses.OfficesResponse;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 
@@ -50,8 +51,7 @@ public class DashboardFragment extends ConnectedFragment {
         networkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // startCategoryActivity("Network");
-                showToast("Network");
+                addOfficesRequest();
             }
         });
 
@@ -130,6 +130,34 @@ public class DashboardFragment extends ConnectedFragment {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         LogUtils.LOGD(TAG, "Error fetching Parent Categories");
+                        ModalProgress.hide(getActivity());
+                        onError(error);
+                    }
+                }
+        );
+        addRequest(request);
+    }
+
+    private void addOfficesRequest() {
+        ModalProgress.show(getActivity(), "Loading Offices", "Please wait...", 3000);
+        final Request<OfficesResponse> request = OfficesResponse.getOfficesRequest(
+                new Listener<OfficesResponse>() {
+                    @Override
+                    public void onResponse(OfficesResponse response) {
+                        if (response != null && response.isSuccessful()) {
+                            Intent officeIntent = new Intent(getActivity(), OfficeActivity.class);
+                            Bundle args = new Bundle();
+                            response.putSelf(args);
+                            officeIntent.putExtras(args);
+                            startActivity(officeIntent);
+                            getActivity().overridePendingTransition(R.anim.enter_from_right, R.anim.exit_from_left);
+                        }
+                    }
+                },
+                new ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        LogUtils.LOGD(TAG, "Error fetching Offices");
                         ModalProgress.hide(getActivity());
                         onError(error);
                     }

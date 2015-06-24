@@ -9,6 +9,8 @@
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal|top"/>
+        android:layout_gravity="center_horizontal|top"
+        android:divider="@color/porta_blue"
+        android:dividerHeight="1dp"/>
 
 </LinearLayout>
