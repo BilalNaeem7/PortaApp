@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">PORTA</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_category">CategoryActivity</string>
+    <string name="label_catalog">Catalog</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="general_error">Something went wrong, please try again later.</string>
+    <string name="volley_network_error">Internet disconnected, please try again.</string>
+    <string name="general_error_server">Oh no! something went wrong :( \nplease try again.</string>
+
+
+</resources>
