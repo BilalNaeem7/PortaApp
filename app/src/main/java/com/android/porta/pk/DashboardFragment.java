@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.android.porta.pk.responses.DealersResponse;
 import com.android.porta.pk.responses.OfficesResponse;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
@@ -87,6 +88,7 @@ public class DashboardFragment extends ConnectedFragment {
             @Override
             public void onClick(View v) {
                 // startCategoryActivity("Locate Us");
+                addDealersRequest();
                 showToast("Locate Us");
             }
         });
@@ -158,6 +160,34 @@ public class DashboardFragment extends ConnectedFragment {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         LogUtils.LOGD(TAG, "Error fetching Offices");
+                        ModalProgress.hide(getActivity());
+                        onError(error);
+                    }
+                }
+        );
+        addRequest(request);
+    }
+
+    public void addDealersRequest() {
+        ModalProgress.show(getActivity(), "Loading Map", "Please wait...", 3000);
+        final Request<DealersResponse> request = DealersResponse.getDealersRequest(
+                new Listener<DealersResponse>() {
+                    @Override
+                    public void onResponse(DealersResponse response) {
+                        if (response != null && response.isSuccessful()) {
+                            Intent locationIntent = new Intent(getActivity(), MapActivity.class);
+                            Bundle args = new Bundle();
+                            response.putSelf(args);
+                            locationIntent.putExtras(args);
+                            startActivity(locationIntent);
+                            getActivity().overridePendingTransition(R.anim.enter_from_right, R.anim.exit_from_left);
+                        }
+                    }
+                },
+                new ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        LogUtils.LOGD(TAG, "Error Loading Map");
                         ModalProgress.hide(getActivity());
                         onError(error);
                     }

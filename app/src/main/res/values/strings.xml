@@ -10,6 +10,7 @@
     <string name="general_error">Something went wrong, please try again later.</string>
     <string name="volley_network_error">Internet disconnected, please try again.</string>
     <string name="general_error_server">Oh no! something went wrong :( \nplease try again.</string>
+    <string name="title_activity_map">Map</string>
 
 
 </resources>
